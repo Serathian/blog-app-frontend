@@ -1,9 +1,11 @@
 import React from 'react'
 
-const Notification = ({ message, style }) => {
-  if (message === undefined) {
+const Notification = ({ notification }) => {
+  if (notification === undefined) {
     return null
   }
-  return <div className={'error-' + style}>{message}</div>
+  return (
+    <div className={'error-' + notification.style}>{notification.message}</div>
+  )
 }
 export default Notification

@@ -1,30 +1,6 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-const handleLikes = async (blog, getAllBlogs) => {
-  console.log('handleLikes called')
-  const blogObject = {
-    user: blog.user.id,
-    likes: blog.likes + 1,
-    author: blog.author,
-    title: blog.title,
-    url: blog.url,
-  }
-  console.log('blogObject', blogObject)
-  await blogService.update(blog.id, blogObject)
-  getAllBlogs()
-}
-
-const handleDelete = async (blog, getAllBlogs) => {
-  console.log('handleDelete called')
-  if (window.confirm(`Remove ${blog.title}?`)) {
-    await blogService.remove(blog.id)
-    getAllBlogs()
-  }
-  return false
-}
-
-const Blog = ({ blog, getAllBlogs, userId }) => {
+const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -41,29 +17,30 @@ const Blog = ({ blog, getAllBlogs, userId }) => {
   const isDeleteable = { display: blog.user.id === userId ? '' : 'none' }
 
   return (
-    <div style={blogStyle}>
-      <h3>
-        {blog.title}
-        <button style={hideWhenVisible} onClick={toggleVisibility}>
-          View
-        </button>
-        <button style={showWhenVisible} onClick={toggleVisibility}>
-          Hide
-        </button>
-      </h3>
+    <div className='blog' style={blogStyle}>
+      <div className='blogBasicInfo'>
+        <h3 style={{ margin: 5 }} className='blogTitle'>
+          {blog.title}
 
-      <div style={showWhenVisible}>
-        <p>
-          {blog.author}
-          <br />
-          {blog.url}
-          <br />
-          {blog.likes}{' '}
-          <button onClick={() => handleLikes(blog, getAllBlogs)}>Like</button>
-        </p>
-        <button
-          style={isDeleteable}
-          onClick={() => handleDelete(blog, getAllBlogs)}>
+          <button style={hideWhenVisible} onClick={toggleVisibility}>
+            View
+          </button>
+          <button style={showWhenVisible} onClick={toggleVisibility}>
+            Hide
+          </button>
+        </h3>
+        <h5 style={{ margin: 5 }} className='blogAuthor'>
+          by: {blog.author}
+        </h5>
+      </div>
+      <div className='blogMoreInfo' style={showWhenVisible}>
+        <ul>
+          <li>URL: {blog.url}</li>
+          <li>Likes: {blog.likes}</li>
+        </ul>
+        <button onClick={() => handleLikes(blog)}>Like</button>
+
+        <button style={isDeleteable} onClick={() => handleDelete(blog)}>
           Delete
         </button>
       </div>
