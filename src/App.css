@@ -37,7 +37,7 @@
   }
 }
 
-.error-1 {
+.error {
   color: red;
   background: lightgrey;
   font-size: 20px;
@@ -47,7 +47,7 @@
   margin-bottom: 10px;
 }
 
-.error-2 {
+.success {
   color: green;
   background: lightgrey;
   font-size: 20px;

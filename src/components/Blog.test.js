@@ -19,7 +19,6 @@ test('renders content', () => {
   }
 
   const component = render(<Blog blog={blog} />)
-  //component.debug()
 
   expect(component.container).toHaveTextContent('Test Blog One')
 
@@ -28,8 +27,6 @@ test('renders content', () => {
 
   const div = component.container.querySelector('.blog')
   expect(div).toHaveTextContent('https://SomeBlogOne.test')
-
-  //console.log(prettyDOM(h3))
 })
 
 test('render blog with url and likes hidden', () => {

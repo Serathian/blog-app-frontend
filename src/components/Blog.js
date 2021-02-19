@@ -14,7 +14,9 @@ const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-  const isDeleteable = { display: blog.user.id === userId ? '' : 'none' }
+  const isDeleteable = {
+    display: blog.user.id === userId ? '' : 'none',
+  }
 
   return (
     <div className='blog' style={blogStyle}>
@@ -35,12 +37,17 @@ const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
       </div>
       <div className='blogMoreInfo' style={showWhenVisible}>
         <ul>
-          <li>URL: {blog.url}</li>
-          <li>Likes: {blog.likes}</li>
+          <li id='url'>URL: {blog.url}</li>
+          <li id='likes'>Likes: {blog.likes}</li>
         </ul>
-        <button onClick={() => handleLikes(blog)}>Like</button>
+        <button id='likeButton' onClick={() => handleLikes(blog)}>
+          Like
+        </button>
 
-        <button style={isDeleteable} onClick={() => handleDelete(blog)}>
+        <button
+          style={isDeleteable}
+          id='deleteButton'
+          onClick={() => handleDelete(blog)}>
           Delete
         </button>
       </div>

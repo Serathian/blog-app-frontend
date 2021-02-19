@@ -1,57 +1,40 @@
-import React, { useState } from 'react'
-import loginService from '../services/login'
-import blogService from '../services/blogs'
+import React from 'react'
 
-const LoginForm = ({ setUser, showNotification }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    console.log('logging in with', username, password)
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-
-      showNotification(`${user.name} successfully logged in!`, 2)
-    } catch (exception) {
-      showNotification('Wrong credentials', 1)
-    }
-  }
+const LoginForm = ({
+  username,
+  onUserNameChange,
+  password,
+  onPasswordChange,
+  handleLogin,
+}) => {
   return (
-    <div>
+    <div id='loginForm'>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
           username
           <input
+            id='username'
             type='text'
             value={username}
             name='Username'
-            onChange={({ target }) => setUsername(target.value)}
+            onChange={onUserNameChange}
           />
         </div>
         <div>
           password
           <input
+            id='password'
             type='password'
             value={password}
             name='Password'
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={onPasswordChange}
           />
         </div>
         <div>
-          <button type='submit'>Login</button>
+          <button id='login-button' type='submit'>
+            Login
+          </button>
         </div>
       </form>
     </div>

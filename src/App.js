@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
+import loginService from './services/login'
 import './App.css'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
@@ -11,7 +12,8 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [notificationObject, setNotificationObject] = useState({})
   const [user, setUser] = useState(null)
-  const blogFormRef = React.createRef()
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const getAllBlogs = async () => {
     const blogs = await blogService.getAll()
@@ -28,6 +30,23 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+      showNotification(`${user.name} successfully logged in!`, 2)
+    } catch (exception) {
+      showNotification('Wrong credentials', 1)
+    }
+  }
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(window.localStorage.getItem('loggedBlogappUser'))
@@ -57,29 +76,39 @@ const App = () => {
   }
   const addBlog = async (blogObject) => {
     await blogService.create(blogObject)
-    //Missing the show notification as it throws a error
+    showNotification(`"${blogObject.title}" has been created!`)
     getAllBlogs()
     blogFormRef.current.toggleVisibility()
   }
-
+  const showNotification = (message, style) => {
+    setNotificationObject({ message: message, style: style })
+    setTimeout(() => {
+      setNotificationObject({})
+    }, 5000)
+  }
+  const blogFormRef = useRef()
+  const loginFormRef = useRef()
   const blogForm = () => (
-    <Togglable buttonLabel='new blog' ref={blogFormRef}>
+    <Togglable
+      defaultVisibility={false}
+      buttonLabel='new blog'
+      ref={blogFormRef}>
       <BlogForm addBlog={addBlog} />
     </Togglable>
   )
   const loginForm = () => (
-    <Togglable buttonLabel='login'>
-      <LoginForm setUser={setUser} showNotification={showNotification} />
+    <Togglable defaultVisibility={true} buttonLabel='login' ref={loginFormRef}>
+      <LoginForm
+        username={username}
+        onUserNameChange={({ target }) => setUsername(target.value)}
+        password={password}
+        onPasswordChange={({ target }) => setPassword(target.value)}
+        handleLogin={handleLogin}
+        setPasswordsetUser={setUser}
+        showNotification={showNotification}
+      />
     </Togglable>
   )
-
-  const showNotification = (message, style) => {
-    setNotificationObject({ message: message, style: style })
-    setTimeout(() => {
-      setNotificationObject(undefined)
-    }, 5000)
-  }
-
   return (
     <div>
       <h2> - The Blog Database - </h2>
