@@ -15,13 +15,18 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  //method calls blogService for all the blogs
   const getAllBlogs = async () => {
     const blogs = await blogService.getAll()
     setBlogs(blogs)
   }
+
+  //gets all blogs on page rerender
   useEffect(() => {
     getAllBlogs()
   }, [])
+
+  //get the user info from the localstore on each page rerender
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -30,6 +35,8 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  //logs the user in via the loginService and saves it to the local store
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
@@ -47,11 +54,16 @@ const App = () => {
       showNotification('Wrong credentials', 1)
     }
   }
+
+  //logs the user out and removes the local stores
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(window.localStorage.getItem('loggedBlogappUser'))
     showNotification('Logged out!', 1)
   }
+
+  //updates a blog using blogService with a new blog object
+  //with an addition to the likes variable
   const handleLikes = async (blog) => {
     console.log('handleLikes called')
     const blogObject = {
@@ -65,6 +77,8 @@ const App = () => {
     getAllBlogs()
     showNotification(`${blog.title} Liked!`, 2)
   }
+
+  //deletes a blog using the blogService, shows a notification if successful
   const handleDelete = async (blog) => {
     console.log('handleDelete called')
     if (window.confirm(`Remove ${blog.title}?`)) {
@@ -74,20 +88,28 @@ const App = () => {
     }
     return false
   }
+
+  //adds a blog using the blogService, shows a notification if successful
   const addBlog = async (blogObject) => {
     await blogService.create(blogObject)
     showNotification(`"${blogObject.title}" has been created!`)
     getAllBlogs()
     blogFormRef.current.toggleVisibility()
   }
+
+  //notification method updates the notification state
   const showNotification = (message, style) => {
     setNotificationObject({ message: message, style: style })
     setTimeout(() => {
       setNotificationObject({})
     }, 5000)
   }
+
+  //References for our togglable components, loginFormRef is not in use.
   const blogFormRef = useRef()
   const loginFormRef = useRef()
+
+  //blogForm wrapped in togglable component
   const blogForm = () => (
     <Togglable
       defaultVisibility={false}
@@ -96,6 +118,8 @@ const App = () => {
       <BlogForm addBlog={addBlog} />
     </Togglable>
   )
+
+  //loginForm wrapped in togglable component
   const loginForm = () => (
     <Togglable defaultVisibility={true} buttonLabel='login' ref={loginFormRef}>
       <LoginForm
@@ -109,6 +133,7 @@ const App = () => {
       />
     </Togglable>
   )
+
   return (
     <div>
       <h2> - The Blog Database - </h2>
