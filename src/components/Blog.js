@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { likeSingleBlog, deleteSingleBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
+const Blog = ({ blog, user, likeSingleBlog, deleteSingleBlog }) => {
   //default css style provided by course material
   const blogStyle = {
     paddingTop: 10,
@@ -17,7 +19,7 @@ const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
   }
   //boolean - is the user the owner of the blog post
   const isDeleteable = {
-    display: blog.user.id === userId ? '' : 'none',
+    display: blog.user.id === user.id ? '' : 'none',
   }
 
   return (
@@ -42,19 +44,30 @@ const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
           <li id='url'>URL: {blog.url}</li>
           <li id='likes'>Likes: {blog.likes}</li>
         </ul>
-        <button id='likeButton' onClick={() => handleLikes(blog)}>
+        <button id='likeButton' onClick={() => likeSingleBlog(blog)}>
           Like
         </button>
 
         <button
           style={isDeleteable}
           id='deleteButton'
-          onClick={() => handleDelete(blog)}>
+          onClick={() => deleteSingleBlog(blog.id)}>
           Delete
         </button>
       </div>
     </div>
   )
 }
+const mapDispatchToProps = {
+  likeSingleBlog,
+  deleteSingleBlog,
+}
 
-export default Blog
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+}
+
+const ConnectedBlog = connect(mapStateToProps, mapDispatchToProps)(Blog)
+export default ConnectedBlog

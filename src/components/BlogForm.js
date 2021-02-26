@@ -1,22 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
+import { addSingleBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ addBlog }) => {
-  const [newBlogTitle, setNewBlogTitle] = useState('')
-  const [newBlogAuthor, setNewBlogAuthor] = useState('')
-  const [newBlogUrl, setNewBlogUrl] = useState('')
-
+const BlogForm = (props) => {
   const createBlogObject = (event) => {
     event.preventDefault()
     console.log('createBlogObject called')
     const blogObject = {
-      title: newBlogTitle,
-      author: newBlogAuthor,
-      url: newBlogUrl,
+      title: event.target.title.value,
+      author: event.target.author.value,
+      url: event.target.url.value,
     }
-    addBlog(blogObject)
-    setNewBlogTitle('')
-    setNewBlogAuthor('')
-    setNewBlogUrl('')
+    props.addSingleBlog(blogObject)
   }
 
   return (
@@ -24,30 +19,15 @@ const BlogForm = ({ addBlog }) => {
       <form onSubmit={createBlogObject}>
         <div>
           Title:
-          <input
-            id='title'
-            style={{ marginLeft: 10 }}
-            value={newBlogTitle}
-            onChange={({ target }) => setNewBlogTitle(target.value)}
-          />
+          <input id='title' style={{ marginLeft: 10 }} name='title' />
         </div>
         <div>
           Author:
-          <input
-            id='author'
-            style={{ marginLeft: 10 }}
-            value={newBlogAuthor}
-            onChange={({ target }) => setNewBlogAuthor(target.value)}
-          />
+          <input id='author' style={{ marginLeft: 10 }} name='author' />
         </div>
         <div>
           Url:
-          <input
-            id='url'
-            style={{ marginLeft: 10 }}
-            value={newBlogUrl}
-            onChange={({ target }) => setNewBlogUrl(target.value)}
-          />
+          <input id='url' style={{ marginLeft: 10 }} name='url' />
         </div>
         <button style={{ margin: 5 }} type='submit'>
           Save
@@ -56,5 +36,13 @@ const BlogForm = ({ addBlog }) => {
     </div>
   )
 }
+const mapDispatchToProps = {
+  addSingleBlog,
+}
 
-export default BlogForm
+const mapStateToProps = (state) => {
+  return {}
+}
+
+const ConnectedBlogForm = connect(mapStateToProps, mapDispatchToProps)(BlogForm)
+export default ConnectedBlogForm
