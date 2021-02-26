@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
-import blogService from './services/blogs'
-import loginService from './services/login'
+import { useDispatch } from 'react-redux'
 import './App.css'
+
+import { getAllBlogs } from './reducers/blogReducer'
+
+//#region COMPONENT IMPORTS
+import Blog from './components/Blog'
+import BlogList from './components/BlogList'
+import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
+//#endregion
+//#region SERVICES IMPORTS
+import blogService from './services/blogs'
+import loginService from './services/login'
+//#endregion
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -15,16 +24,12 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  //method calls blogService for all the blogs
-  const getAllBlogs = async () => {
-    const blogs = await blogService.getAll()
-    setBlogs(blogs)
-  }
+  const dispatch = useDispatch()
 
   //gets all blogs on page rerender
   useEffect(() => {
-    getAllBlogs()
-  }, [])
+    dispatch(getAllBlogs())
+  }, [dispatch])
 
   //get the user info from the localstore on each page rerender
   useEffect(() => {
@@ -156,17 +161,7 @@ const App = () => {
             </button>
           </p>
           {blogForm()}
-          {blogs
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog
-                key={blog.id}
-                userId={user.id}
-                blog={blog}
-                handleLikes={handleLikes}
-                handleDelete={handleDelete}
-              />
-            ))}
+          <BlogList />
         </div>
       )}
     </div>

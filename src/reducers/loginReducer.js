@@ -2,6 +2,10 @@ import loginService from '../services/login'
 
 const loginReducer = (state = [], action) => {
   switch (action.type) {
+    case 'LOGIN':
+      return
+    case 'LOGOUT':
+      return
     default:
       return state
   }

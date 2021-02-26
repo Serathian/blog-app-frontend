@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
+  //default css style provided by course material
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,6 +15,7 @@ const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
+  //boolean - is the user the owner of the blog post
   const isDeleteable = {
     display: blog.user.id === userId ? '' : 'none',
   }
