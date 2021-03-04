@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { connect } from 'react-redux'
-import { addSingleBlog } from '../reducers/blogReducer'
-import Togglable from '../components/Togglable'
+import { addSingleBlog } from '../../reducers/blogReducer'
+import Togglable from '../misc/Togglable'
 
 const BlogForm = ({ addSingleBlog }) => {
   const blogFormRef = useRef()

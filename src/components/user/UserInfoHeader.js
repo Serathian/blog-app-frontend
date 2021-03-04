@@ -1,12 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { userLogout } from '../reducers/loginReducer'
+import { Link } from 'react-router-dom'
+import { userLogout } from '../../reducers/loginReducer'
 
 const UserInfoHeader = ({ user, userLogout }) => {
   if (user.isAuthUser === true) {
     return (
       <div className='userinfoHeader'>
-        <h4>Welcome {user.name}</h4>
+        <h4>
+          Welcome <Link to='/useraccount'>{user.name}</Link>{' '}
+        </h4>
         <button onClick={userLogout}>Logout</button>
       </div>
     )

@@ -16,8 +16,8 @@ const loginReducer = (state = initialState(), action) => {
   switch (action.type) {
     case 'LOGIN':
       return { ...action.data, isAuthUser: true }
-    case 'SET_USER':
-      return { ...action.data, isAuthUser: true }
+    /*     case 'SET_USER':
+      return { ...action.data, isAuthUser: true } */
     case 'LOGOUT':
       return { isAuthUser: false }
     default:
@@ -39,7 +39,7 @@ export const userLogin = (username, password) => {
   }
 }
 
-export const checkLocalStorageForUser = () => {
+/* export const checkLocalStorageForUser = () => {
   const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
   if (loggedUserJSON) {
     const user = JSON.parse(loggedUserJSON)
@@ -50,7 +50,7 @@ export const checkLocalStorageForUser = () => {
     }
   }
 }
-
+ */
 export const userLogout = () => {
   window.localStorage.removeItem('loggedBlogappUser')
   return {

@@ -1,17 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { userLogin } from '../reducers/loginReducer'
-import Togglable from '../components/Togglable'
+import { userLogin } from '../../reducers/loginReducer'
+import Togglable from '../misc/Togglable'
 
-const LoginForm = (props) => {
+const LoginForm = ({ userLogin }) => {
   const handleLogin = (e) => {
     e.preventDefault()
     const username = e.target.username.value
     const password = e.target.password.value
-    props.userLogin(username, password)
+    userLogin(username, password)
   }
   return (
-    <Togglable defaultVisibility={true} buttonLabel='login'>
+    <Togglable defaultVisibility={false} buttonLabel='login'>
       <div id='loginForm'>
         <h2>Login</h2>
         <form onSubmit={(e) => handleLogin(e)}>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import NewUser from '../user/NewUser'
 import LoginForm from './LoginForm'
 
 const LoginPage = ({ isAuthUser }) => {
@@ -9,8 +10,9 @@ const LoginPage = ({ isAuthUser }) => {
   }
   return (
     <div className='loginPage'>
-      <h4>Please login to use the blogs database</h4>
+      <h4>Please login or create a new user</h4>
       <LoginForm />
+      <NewUser />
     </div>
   )
 }

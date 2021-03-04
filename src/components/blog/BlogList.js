@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
-import { getAllBlogs } from '../reducers/blogReducer'
-import Blog from '../components/Blog'
-import { likeSingleBlog, deleteSingleBlog } from '../reducers/blogReducer'
+import Blog from './Blog'
+import {
+  likeSingleBlog,
+  deleteSingleBlog,
+  getAllBlogs,
+} from '../../reducers/blogReducer'
 import { connect } from 'react-redux'
 
 const BlogList = ({
