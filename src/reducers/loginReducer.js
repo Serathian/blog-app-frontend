@@ -4,11 +4,11 @@ import blogService from '../services/blogs'
 const loginReducer = (state = null, action) => {
   switch (action.type) {
     case 'LOGIN':
-      return action.data
+      return { ...action.data, isAuthUser: true }
     case 'SET_USER':
-      return action.data
+      return { ...action.data, isAuthUser: true }
     case 'LOGOUT':
-      return null
+      return { isAuthUser: false }
     default:
       return state
   }

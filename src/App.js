@@ -2,9 +2,20 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { checkLocalStorageForUser, userLogout } from './reducers/loginReducer'
 import BlogList from './components/BlogList'
+import UserList from './components/UserList'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import Menu from './components/Menu'
 import './App.css'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useHistory,
+  Redirect,
+} from 'react-router-dom'
 
 const App = ({ checkLocalStorageForUser, user, userLogout }) => {
   //get the user info from the localstore on each page rerender
@@ -14,14 +25,16 @@ const App = ({ checkLocalStorageForUser, user, userLogout }) => {
 
   return (
     <div>
+      <Menu />
       <h2> - The Blog Database - </h2>
 
       {user === null ? (
-        <div>
+        <Redirect to='/login' />
+      ) : (
+        /* <div>
           <h4>Login to see blog posts</h4>
           <LoginForm />
-        </div>
-      ) : (
+        </div> */
         <div>
           <p>
             Welcome{' '}
@@ -37,6 +50,17 @@ const App = ({ checkLocalStorageForUser, user, userLogout }) => {
           <BlogList />
         </div>
       )}
+      <Switch>
+        <Route path='/login'>
+          <LoginForm />
+        </Route>
+        <Route path='/blogs'>
+          <BlogList />
+        </Route>
+        <Route path='/users'>
+          <UserList />
+        </Route>
+      </Switch>
     </div>
   )
 }
