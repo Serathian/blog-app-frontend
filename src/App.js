@@ -1,81 +1,27 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { checkLocalStorageForUser, userLogout } from './reducers/loginReducer'
-import BlogList from './components/BlogList'
-import UserList from './components/UserList'
-import BlogForm from './components/BlogForm'
-import LoginForm from './components/LoginForm'
+import React from 'react'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import AuthRoute from './routers/AuthRoute'
 import Menu from './components/Menu'
+import UserInfoHeader from './components/UserInfoHeader'
+import LoginPage from './components/LoginPage'
+import IndexPage from './components/IndexPage'
+import BlogsPage from './components/BlogsPage'
+import UserList from './components/UserList'
 import './App.css'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useHistory,
-  Redirect,
-} from 'react-router-dom'
 
-const App = ({ checkLocalStorageForUser, user, userLogout }) => {
-  //get the user info from the localstore on each page rerender
-  useEffect(() => {
-    checkLocalStorageForUser()
-  }, [checkLocalStorageForUser])
-
+const App = () => {
   return (
-    <div>
+    <Router>
       <Menu />
-      <h2> - The Blog Database - </h2>
-
-      {user === null ? (
-        <Redirect to='/login' />
-      ) : (
-        /* <div>
-          <h4>Login to see blog posts</h4>
-          <LoginForm />
-        </div> */
-        <div>
-          <p>
-            Welcome{' '}
-            <strong>
-              <i>{user.name}</i>
-            </strong>{' '}
-            you are logged in
-            <button style={{ marginLeft: 10 }} onClick={userLogout}>
-              logout
-            </button>
-          </p>
-          <BlogForm />
-          <BlogList />
-        </div>
-      )}
-      <Switch>
-        <Route path='/login'>
-          <LoginForm />
-        </Route>
-        <Route path='/blogs'>
-          <BlogList />
-        </Route>
-        <Route path='/users'>
-          <UserList />
-        </Route>
-      </Switch>
-    </div>
+      <UserInfoHeader />
+      <div className='container'></div>
+      <Route path='/loginpage' component={LoginPage} />
+      <AuthRoute path='/indexpage' component={IndexPage} />
+      <AuthRoute path='/blogs' component={BlogsPage} />
+      <AuthRoute path='/users' component={UserList} />
+      <Route path='/' render={() => <Redirect to='/indexpage' />} />
+    </Router>
   )
 }
 
-const mapDispatchToProps = {
-  checkLocalStorageForUser,
-  userLogout,
-}
-
-const mapStateToProps = (state) => {
-  return {
-    blogs: state.blogs,
-    user: state.user,
-  }
-}
-
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
-export default ConnectedApp
+export default App

@@ -1,7 +1,18 @@
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const loginReducer = (state = null, action) => {
+const initialState = () => {
+  const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+  if (loggedUserJSON) {
+    const user = JSON.parse(loggedUserJSON)
+    blogService.setToken(user.token)
+    return { ...user, isAuthUser: true }
+  } else {
+    return { isAuthUser: false }
+  }
+}
+
+const loginReducer = (state = initialState(), action) => {
   switch (action.type) {
     case 'LOGIN':
       return { ...action.data, isAuthUser: true }
