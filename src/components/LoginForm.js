@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { userLogin } from '../reducers/loginReducer'
+import Togglable from '../components/Togglable'
 
 const LoginForm = (props) => {
   const handleLogin = (e) => {
@@ -10,24 +11,26 @@ const LoginForm = (props) => {
     props.userLogin(username, password)
   }
   return (
-    <div id='loginForm'>
-      <h2>Login</h2>
-      <form onSubmit={(e) => handleLogin(e)}>
-        <div>
-          username
-          <input id='username' type='text' name='Username' />
-        </div>
-        <div>
-          password
-          <input id='password' type='password' name='Password' />
-        </div>
-        <div>
-          <button id='login-button' type='submit'>
-            Login
-          </button>
-        </div>
-      </form>
-    </div>
+    <Togglable defaultVisibility={true} buttonLabel='login'>
+      <div id='loginForm'>
+        <h2>Login</h2>
+        <form onSubmit={(e) => handleLogin(e)}>
+          <div>
+            username
+            <input id='username' type='text' name='Username' />
+          </div>
+          <div>
+            password
+            <input id='password' type='password' name='Password' />
+          </div>
+          <div>
+            <button id='login-button' type='submit'>
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </Togglable>
   )
 }
 

@@ -10,10 +10,9 @@ const blogReducer = (state = [], action) => {
       const updatedBlog = { ...blogToUpdate, likes: action.data.likes }
       return state.map((blog) => (blog.id !== likeBlogId ? blog : updatedBlog))
     case 'DELETE_BLOG':
-      const deleteBlogId = action.data.id
-      return state.filter((b) => b.id !== deleteBlogId)
+      const deleteBlogId = action.data
+      return state.filter((blog) => blog.id !== deleteBlogId)
     case 'ALL_BLOG':
-      console.log('Reducer called ALL_BLOG', action.data)
       return action.data
     default:
       return state
@@ -22,17 +21,17 @@ const blogReducer = (state = [], action) => {
 
 export const addSingleBlog = (blogObject) => {
   return async (dispatch) => {
-    const newBlog = await blogService.create(blogObject)
+    const newBlogId = await blogService.create(blogObject)
+    const newBlog = await blogService.getOne(newBlogId)
     dispatch({
       type: 'NEW_BLOG',
       data: newBlog,
     })
-    //blogFormRef.current.toggleVisibility()
   }
 }
+
 export const likeSingleBlog = (blog) => {
   const blogObject = { ...blog, likes: blog.likes + 1, user: blog.user.id }
-  console.log(blogObject)
   return async (dispatch) => {
     const returnedBlog = await blogService.update(blog.id, blogObject)
     dispatch({
@@ -43,8 +42,8 @@ export const likeSingleBlog = (blog) => {
 }
 
 export const deleteSingleBlog = (id) => {
-  return async (dispatch) => {
-    const deletedBlog = await blogService.remove(id)
+  return async (dispatch, BlogId) => {
+    await blogService.remove(id)
     dispatch({
       type: 'DELETE_BLOG',
       data: id,
@@ -53,10 +52,8 @@ export const deleteSingleBlog = (id) => {
 }
 
 export const getAllBlogs = () => {
-  console.log('getAllBlogs called in reducer')
   return async (dispatch) => {
     const allBlogs = await blogService.getAll()
-    console.log('GAB - allBlogs: ', allBlogs)
     dispatch({
       type: 'ALL_BLOG',
       data: allBlogs,

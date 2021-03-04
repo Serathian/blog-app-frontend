@@ -1,24 +1,36 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { getAllBlogs } from '../reducers/blogReducer'
 import Blog from '../components/Blog'
 import { likeSingleBlog, deleteSingleBlog } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
 
-const BlogList = (props) => {
+const BlogList = ({
+  blogs,
+  getAllBlogs,
+  likeSingleBlog,
+  deleteSingleBlog,
+  user,
+}) => {
+  useEffect(() => {
+    getAllBlogs()
+  }, [getAllBlogs])
+
   const handleLikes = (blog) => {
-    props.likeSingleBlog(blog)
+    likeSingleBlog(blog)
   }
+
   const handleDelete = (blogId) => {
-    props.deleteSingleBlog(blogId)
+    deleteSingleBlog(blogId)
   }
 
   return (
     <div id='blogList'>
-      {props.blogs
+      {blogs
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
           <Blog
             key={blog.id}
-            //userId={user.id}
+            userId={user.id}
             blog={blog}
             handleLikes={handleLikes}
             handleDelete={handleDelete}
@@ -31,11 +43,13 @@ const BlogList = (props) => {
 const mapDispatchToProps = {
   likeSingleBlog,
   deleteSingleBlog,
+  getAllBlogs,
 }
 
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
+    user: state.user,
   }
 }
 

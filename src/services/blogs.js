@@ -11,6 +11,10 @@ const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then((response) => response.data)
 }
+const getOne = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
 
 const create = async (newObject) => {
   const config = {
@@ -39,4 +43,4 @@ const remove = async (id) => {
   return response.data
 }
 
-export default { getAll, create, update, setToken, remove }
+export default { getAll, getOne, create, update, setToken, remove }

@@ -1,25 +1,10 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import { likeSingleBlog, deleteSingleBlog } from '../reducers/blogReducer'
-
-const Blog = ({ blog, user, likeSingleBlog, deleteSingleBlog }) => {
-  //default css style provided by course material
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
+const Blog = ({ blog, userId, handleLikes, handleDelete }) => {
   const [visible, setVisible] = useState(false)
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
   const toggleVisibility = () => {
     setVisible(!visible)
-  }
-  //boolean - is the user the owner of the blog post
-  const isDeleteable = {
-    display: blog.user.id === user.id ? '' : 'none',
   }
 
   return (
@@ -44,30 +29,27 @@ const Blog = ({ blog, user, likeSingleBlog, deleteSingleBlog }) => {
           <li id='url'>URL: {blog.url}</li>
           <li id='likes'>Likes: {blog.likes}</li>
         </ul>
-        <button id='likeButton' onClick={() => likeSingleBlog(blog)}>
+        <button id='likeButton' onClick={() => handleLikes(blog)}>
           Like
         </button>
 
         <button
-          style={isDeleteable}
+          style={{ display: blog.user.id === userId ? '' : 'none' }}
           id='deleteButton'
-          onClick={() => deleteSingleBlog(blog.id)}>
+          onClick={() => handleDelete(blog.id)}>
           Delete
         </button>
       </div>
     </div>
   )
 }
-const mapDispatchToProps = {
-  likeSingleBlog,
-  deleteSingleBlog,
+
+const blogStyle = {
+  paddingTop: 10,
+  paddingLeft: 2,
+  border: 'solid',
+  borderWidth: 1,
+  marginBottom: 5,
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  }
-}
-
-const ConnectedBlog = connect(mapStateToProps, mapDispatchToProps)(Blog)
-export default ConnectedBlog
+export default Blog
