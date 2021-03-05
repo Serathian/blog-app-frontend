@@ -12,6 +12,7 @@ import LoginPage from './components/login/LoginPage'
 import IndexPage from './components/misc/IndexPage'
 import BlogsPage from './components/blog/BlogsPage'
 import UserList from './components/user/UserList'
+import UserInfo from './components/user/UserInfo'
 import './App.css'
 import UserAccount from './components/user/UserAccount'
 
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='/loginpage' component={LoginPage} />
         <AuthRoute path='/indexpage' component={IndexPage} />
         <AuthRoute path='/blogs' component={BlogsPage} />
+        <AuthRoute path='/user/:id' component={UserInfo} />
         <AuthRoute path='/users' component={UserList} />
         <AuthRoute path='/useraccount' component={UserAccount} />
         <Route path='/' render={() => <Redirect to='/indexpage' />} />

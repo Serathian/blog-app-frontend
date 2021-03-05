@@ -19,7 +19,7 @@ const UserInfoHeader = ({ user, userLogout }) => {
 }
 
 const mapStateToProps = (props) => ({
-  user: props.user,
+  user: props.curUser,
 })
 
 const mapDispatchToProps = {

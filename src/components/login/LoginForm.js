@@ -38,12 +38,5 @@ const mapDispatchToProps = {
   userLogin,
 }
 
-const mapStateToProps = (state) => {
-  return {}
-}
-
-const ConnectedLoginForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginForm)
+const ConnectedLoginForm = connect(null, mapDispatchToProps)(LoginForm)
 export default ConnectedLoginForm
