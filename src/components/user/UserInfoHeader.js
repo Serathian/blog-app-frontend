@@ -9,8 +9,8 @@ const UserInfoHeader = ({ user, userLogout }) => {
       <div className='userinfoHeader'>
         <h4>
           Welcome <Link to='/useraccount'>{user.name}</Link>{' '}
+          <button onClick={userLogout}>Logout</button>
         </h4>
-        <button onClick={userLogout}>Logout</button>
       </div>
     )
   } else {

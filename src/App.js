@@ -11,6 +11,7 @@ import UserInfoHeader from './components/user/UserInfoHeader'
 import LoginPage from './components/login/LoginPage'
 import IndexPage from './components/misc/IndexPage'
 import BlogsPage from './components/blog/BlogsPage'
+import BlogInfo from './components/blog/BlogInfo'
 import UserList from './components/user/UserList'
 import UserInfo from './components/user/UserInfo'
 import './App.css'
@@ -25,6 +26,7 @@ const App = () => {
       <Switch>
         <Route path='/loginpage' component={LoginPage} />
         <AuthRoute path='/indexpage' component={IndexPage} />
+        <AuthRoute path='/blog/:id' component={BlogInfo} />
         <AuthRoute path='/blogs' component={BlogsPage} />
         <AuthRoute path='/user/:id' component={UserInfo} />
         <AuthRoute path='/users' component={UserList} />

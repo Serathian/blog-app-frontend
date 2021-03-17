@@ -1,21 +1,44 @@
 import blogService from '../services/blogs'
 
-const blogReducer = (state = [], action) => {
+const blogReducer = (state = { allBlogs: [], singleBlog: {} }, action) => {
   switch (action.type) {
     case 'NEW_BLOG':
-      return [...state, action.data]
+      return { ...state, allBlogs: [...state.allBlogs, action.data] }
     case 'LIKE_BLOG':
-      const likeBlogId = action.data.id
-      const blogToUpdate = state.find((b) => b.id === likeBlogId)
-      const updatedBlog = { ...blogToUpdate, likes: action.data.likes }
-      return state.map((blog) => (blog.id !== likeBlogId ? blog : updatedBlog))
+      const updatedBlog = { ...state.singleBlog, likes: action.data.likes }
+      return { ...state, singleBlog: updatedBlog }
     case 'DELETE_BLOG':
       const deleteBlogId = action.data
-      return state.filter((blog) => blog.id !== deleteBlogId)
+      return {
+        ...state,
+        allblogs: state.allBlogs.filter((blog) => blog.id !== deleteBlogId),
+        singleBlog: {},
+      }
     case 'ALL_BLOG':
-      return action.data
+      return { ...state, allBlogs: action.data }
+    case 'SINGLE_BLOG':
+      return { ...state, singleBlog: action.data }
     default:
       return state
+  }
+}
+export const getAllBlogs = () => {
+  return async (dispatch) => {
+    const allBlogs = await blogService.getAll()
+    dispatch({
+      type: 'ALL_BLOG',
+      data: allBlogs,
+    })
+  }
+}
+
+export const getSingleBlog = (id) => {
+  return async (dispatch) => {
+    const singleBlog = await blogService.getOne(id)
+    dispatch({
+      type: 'SINGLE_BLOG',
+      data: singleBlog,
+    })
   }
 }
 
@@ -42,7 +65,7 @@ export const likeSingleBlog = (blog) => {
 }
 
 export const deleteSingleBlog = (id) => {
-  return async (dispatch, BlogId) => {
+  return async (dispatch) => {
     await blogService.remove(id)
     dispatch({
       type: 'DELETE_BLOG',
@@ -51,13 +74,15 @@ export const deleteSingleBlog = (id) => {
   }
 }
 
-export const getAllBlogs = () => {
+export const addSingleComment = (comment, blogId) => {
   return async (dispatch) => {
-    const allBlogs = await blogService.getAll()
+    const returnedBlog = await blogService.addComment(blogId, comment)
+    console.log('Returned Blogs: ', returnedBlog)
     dispatch({
-      type: 'ALL_BLOG',
-      data: allBlogs,
+      type: 'ADD_COMMENT',
+      data: returnedBlog,
     })
   }
 }
+
 export default blogReducer
