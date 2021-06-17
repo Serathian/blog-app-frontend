@@ -25,6 +25,7 @@ const BlogInfo = ({
   if (blog === null) {
     return <div>Blog not found</div>
   } else if (blog.id === id) {
+    console.log(blog)
     return (
       <div className='blog'>
         <div className='blogBasicInfo'>

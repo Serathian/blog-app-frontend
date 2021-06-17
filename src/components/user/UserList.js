@@ -14,7 +14,7 @@ const UserList = ({ users, getAllUsers }) => {
         <tbody>
           <tr>
             <th>Name</th>
-            <th>Blogs created</th>
+            <th>Blogs</th>
           </tr>
           {users
             .sort((a, b) => b.blogs - a.blogs)
